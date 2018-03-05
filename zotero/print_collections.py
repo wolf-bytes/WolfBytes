@@ -13,6 +13,7 @@
 
 import os
 import sys
+import json
 
 from pyzotero import zotero
 
@@ -30,8 +31,8 @@ LIBRARY_TYPE= 'group'
 def dump_db(api_key):
     """ Just dump out the entire database
 
-    :param api_key:
-    :return:
+    :param api_key: for our Zotero database
+    :return: None
     """
     zot = zotero.Zotero(LIBRARY_ID, LIBRARY_TYPE, api_key)
 
@@ -40,7 +41,7 @@ def dump_db(api_key):
 
     # print each item's item type and ID
     for i, item in enumerate(items):
-        print(i, ':', item['data']['itemType'], item['data']['title'], item['data']['dateAdded'])
+        print(json.dumps(item))
 
 
 
