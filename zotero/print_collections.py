@@ -5,25 +5,48 @@
     This is more a proof of concept script to exercise pyzotero.
 
     Source cribbed from https://github.com/urschrei/pyzotero
+
+    You will need to set the environment variable WB_API_KEY to our Zotero API key.
+
+    TODO Or, optionally, have a command line argument.
 """
 
+import os
+import sys
 
 from pyzotero import zotero
 
-library_id='1969054' # Zotero group id for WolfBytes
-library_type='group' # This is Zotero group, not an individual Zotero database
+# This is the environment variable in which we look for the Zotero API key
+API_KEY_ENV = 'WB_API_KEY'
 
-# TODO We need to come up with a sensible API key management system.  I generated a read-only key for myself, but
-# hesitated to check it in the git repo for security reasons. (Even though the repo is private.)
-api_key='' # You will need to generate your own API key and put it here.
+# Zotero group id for WolfBytes
+LIBRARY_ID= '1969054'
+
+# This is Zotero group, not an individual Zotero database
+LIBRARY_TYPE= 'group'
 
 
-zot = zotero.Zotero(library_id, library_type, api_key)
+
+def dump_db(api_key):
+    """ Just dump out the entire database
+
+    :param api_key:
+    :return:
+    """
+    zot = zotero.Zotero(LIBRARY_ID, LIBRARY_TYPE, api_key)
+
+    # gab *all the stuff
+    items = zot.everything(zot.top())
+
+    # print each item's item type and ID
+    for i, item in enumerate(items):
+        print(i, ':', item['data']['itemType'], item['data']['title'], item['data']['dateAdded'])
 
 
-items = zot.top(limit=5)
 
-# we've retrieved the latest five top-level items in our library
-# we can print each item's item type and ID
-for i, item in enumerate(items):
-    print(i, ':', item['data']['itemType'], item['data']['title'], item['data']['dateAdded'])
+if __name__ == '__main__':
+    if 'WB_API_KEY' in os.environ:
+        api_key = os.environ['WB_API_KEY']
+        dump_db(api_key)
+    else:
+        print(sys.argv[0], ': Need WB_API_KEY environment variable set')
