@@ -38,10 +38,17 @@ def dump_db(api_key):
 
     # print each item's item type and ID
     for i, item in enumerate(items):
-        if 'title' in item['data']:
-            print(len(item['data']['tags']), item['meta']['createdByUser']['username'], ':', item['data']['title'].replace('\n',' '))
+        if 'note' in item['data']['itemType']:
+            pass # print('Skipping note')
         else:
-            print(len(item['data']['tags']), item['meta']['createdByUser']['username'], ':', item['data'])
+            if 'title' in item['data']:
+                print(len(item['data']['tags']), item['meta']['createdByUser']['username'], ':', item['data']['title'].replace('\n',' '))
+            elif 'case' in item['data']['itemType']:
+                # Special case for, erm, court cases
+                print(len(item['data']['tags']), item['meta']['createdByUser']['username'], ':', item['data']['caseName'].replace('\n', ' '))
+            else:
+                # Some items do not have a title, so just dump out all the data
+                print(len(item['data']['tags']), item['meta']['createdByUser']['username'], ':', item['data'])
 
 
 if __name__ == '__main__':
