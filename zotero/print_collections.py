@@ -15,6 +15,8 @@ import os
 import sys
 import json
 
+import argparse
+
 from pyzotero import zotero
 
 # This is the environment variable in which we look for the Zotero API key
@@ -44,10 +46,37 @@ def dump_db(api_key):
         print(json.dumps(item))
 
 
+def dump_collections(api_key):
+    """ Just dump out the list of collections
+
+    :param api_key:
+    :return: None
+    """
+    zot = zotero.Zotero(LIBRARY_ID, LIBRARY_TYPE, api_key)
+
+    # gab *all the stuff
+    items = zot.collections_top()
+
+    # print each item's item type and ID
+    for i, item in enumerate(items):
+        print(json.dumps(item))
+
 
 if __name__ == '__main__':
-    if 'WB_API_KEY' in os.environ:
-        api_key = os.environ['WB_API_KEY']
-        dump_db(api_key)
-    else:
+
+    if not 'WB_API_KEY' in os.environ:
         print(sys.argv[0], ': Need WB_API_KEY environment variable set')
+        sys.exit(-1)
+
+    api_key = os.environ['WB_API_KEY']
+
+    parser = argparse.ArgumentParser(description='For dumping out Wolf Bytes Zotero database to stdout')
+
+    parser.add_argument('--collections', action='store_true', help='Just print out zotero reference database collections')
+
+    args = parser.parse_args()
+
+    if args.collections:
+        dump_collections(api_key)
+    else:
+        dump_db(api_key)
