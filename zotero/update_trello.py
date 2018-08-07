@@ -21,10 +21,13 @@ from pyzotero import zotero
 API_KEY_ENV = 'WB_API_KEY'
 
 # Zotero group id for WolfBytes
-LIBRARY_ID= '1969054'
+LIBRARY_ID = '1969054'
 
 # This is Zotero group, not an individual Zotero database
-LIBRARY_TYPE= 'group'
+LIBRARY_TYPE = 'group'
+
+# This is the email address for adding a card to the Trello baord
+TRELLO_EMAIL = 'markcoletti1+ylusi3zf18unsafnls2o@boards.trello.com'
 
 
 def _get_collection_keys(api_key):
@@ -61,13 +64,21 @@ def _get_untagged_items(collections, api_key):
     # grind through everything, only keeping the items that belong to the CFR collection that have *NO* tags
     for i, item in enumerate(items):
 
-        # pprint(item['data']['collections'])
-
         # TODO pass in collections name instead of hard-coding 'CFR'
         if collections['CFR']['zoteroKey'] in item['data']['collections'] and item['data']['tags'] == []:
             untagged_items.append({'title' : item['data'].setdefault('title','no title')}) #, 'abstract' : item['data']['abstractNote']})
 
     return untagged_items
+
+
+def emit_email_lines(untagged_items):
+    """ Emit email lines to stdout that can be executed by the shell
+
+    :param untagged_items: each element corresponds to an untagged Zotero record
+    :return: None
+    """
+    for item in untagged_items:
+        print('mail -s "#yellow #red ', ''.join(item['title']), '"', TRELLO_EMAIL)
 
 
 
@@ -81,9 +92,11 @@ if __name__ == '__main__':
 
     collections = _get_collection_keys(api_key)
 
-    pprint(collections)
+    # pprint(collections)
 
     untagged_items = _get_untagged_items(collections, api_key)
 
-    pprint(untagged_items)
+    # pprint(untagged_items)
+
+    emit_email_lines(untagged_items)
 
