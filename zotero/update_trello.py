@@ -79,9 +79,12 @@ def emit_email_lines(untagged_items):
     :return: None
     """
     for item in untagged_items:
-        # print('mail -s "#yellow #red ', ''.join(item['title']), '"', TRELLO_EMAIL)
+        print('Processing', ''.join(item['title']))
+
         subject = "#yellow #red " + ''.join(item['title'])
-        subprocess.check_output(['/bin/echo', '-s', subject, TRELLO_EMAIL])
+        output = subprocess.check_output(['/bin/echo', '-s', subject, TRELLO_EMAIL])
+        
+        print(output)
 
 
 
