@@ -10,6 +10,7 @@
 
 import os
 import sys
+import subprocess
 
 import argparse
 
@@ -78,7 +79,9 @@ def emit_email_lines(untagged_items):
     :return: None
     """
     for item in untagged_items:
-        print('mail -s "#yellow #red ', ''.join(item['title']), '"', TRELLO_EMAIL)
+        # print('mail -s "#yellow #red ', ''.join(item['title']), '"', TRELLO_EMAIL)
+        subject = "#yellow #red " + ''.join(item['title'])
+        subprocess.check_output(['/bin/echo', '-s', subject, TRELLO_EMAIL])
 
 
 
