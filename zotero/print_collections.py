@@ -17,6 +17,8 @@ import json
 
 import argparse
 
+from pprint import pprint
+
 from pyzotero import zotero
 
 # This is the environment variable in which we look for the Zotero API key
@@ -43,7 +45,8 @@ def dump_db(api_key):
 
     # print each item's item type and ID
     for i, item in enumerate(items):
-        print(json.dumps(item))
+        # print(json.dumps(item))
+        print(pprint(item))
 
 
 def dump_collections(api_key):
@@ -59,7 +62,9 @@ def dump_collections(api_key):
 
     # print each item's item type and ID
     for i, item in enumerate(items):
-        print(json.dumps(item))
+        # print(json.dumps(item))
+        # print(pprint(item))
+        print(item['key'].decode('utf8'),item['data']['name'],item['meta']['numItems'])
 
 
 if __name__ == '__main__':
