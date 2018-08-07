@@ -82,7 +82,7 @@ def emit_email_lines(untagged_items):
         print('Processing', ''.join(item['title']))
 
         subject = '"#yellow #red ' + ''.join(item['title']) + '"'
-        output = subprocess.check_output(['/bin/echo', '"Add description"', '|', '/usr/bin/mail', '-s', subject, TRELLO_EMAIL])
+        output = subprocess.check_output(['/bin/echo', 'Nada', '|', '/usr/bin/mail', '-s', subject, TRELLO_EMAIL], shell=True)
 
         print(output)
 
