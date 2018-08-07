@@ -81,9 +81,9 @@ def emit_email_lines(untagged_items):
     for item in untagged_items:
         print('Processing', ''.join(item['title']))
 
-        subject = "#yellow #red " + ''.join(item['title'])
+        subject = '"#yellow #red ' + ''.join(item['title']) + '"'
         output = subprocess.check_output(['/bin/echo', '-s', subject, TRELLO_EMAIL])
-        
+
         print(output)
 
 
