@@ -7,6 +7,11 @@
 
     TODO Expand to other collections, color tagged to identify encompassing collection
 """
+import smtplib
+
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 
 import os
 import sys
@@ -72,19 +77,50 @@ def _get_untagged_items(collections, api_key):
     return untagged_items
 
 
-def emit_email_lines(untagged_items):
-    """ Emit email lines to stdout that can be executed by the shell
+def send_trello_email(untagged_items):
+    """ Send email to Trello to add cards to WolfBytes database maintenance backlog.
 
     :param untagged_items: each element corresponds to an untagged Zotero record
     :return: None
     """
+
+    
     for item in untagged_items:
         print('Processing', ''.join(item['title']))
 
-        subject = '"#yellow #red ' + ''.join(item['title']) + '"'
-        output = subprocess.check_output(['/bin/echo', 'Nada', '|', '/usr/bin/mail', '-s', subject, TRELLO_EMAIL], shell=True)
+        #     msg = MIMEMultipart()
 
-        print(output)
+        #     msg['Subject'] = '"#yellow #red ' + ''.join(item['title']) + '"'
+        #     msg['From'] = 'mcoletti@lychnobite.org'
+        #     msg['To'] = TRELLO_EMAIL
+
+        #     body = 'Zotero item that needs tagged'
+
+        #     msg.attach(MIMEText(body, 'plain'))
+        
+        #     server = smtplib.SMTP('smtp.dreamhost.com', 587)
+        #     server.set_debuglevel(1)
+        #     server.ehlo()
+        #     server.starttls()
+        #     server.ehlo()
+        #     text = msg.as_string()
+        #     server.sendmail(fromaddr, toaddr, text)
+
+        #     # output = subprocess.check_output(['/bin/echo', 'Nada', '|', '/usr/bin/mail', '-s', subject, TRELLO_EMAIL], shell=True)
+        print('/bin/echo "Zotero item that needs tagged" | mail -s "', item['title'], '#red #yellow"', TRELLO_EMAIL)
+
+        #     # s.ehlo()
+        #     # s.starttls()
+        #     # s.ehlo()
+
+        #     # s.ehlo()
+        #     # s.send_message(msg)
+
+        #     # print('Sent',item['title'])
+
+        break # TODO temporary just to add *one* card
+
+    # s.quit()
 
 
 
@@ -104,5 +140,5 @@ if __name__ == '__main__':
 
     # pprint(untagged_items)
 
-    emit_email_lines(untagged_items)
+    send_trello_email(untagged_items)
 
