@@ -78,49 +78,16 @@ def _get_untagged_items(collections, api_key):
 
 
 def send_trello_email(untagged_items):
-    """ Send email to Trello to add cards to WolfBytes database maintenance backlog.
+    """ Emit mail commands that can be saved to a script for later execution.
 
     :param untagged_items: each element corresponds to an untagged Zotero record
     :return: None
     """
-
-    
     for item in untagged_items:
-        print('Processing', ''.join(item['title']))
+        #print('Processing', ''.join(item['title']))
 
-        #     msg = MIMEMultipart()
-
-        #     msg['Subject'] = '"#yellow #red ' + ''.join(item['title']) + '"'
-        #     msg['From'] = 'mcoletti@lychnobite.org'
-        #     msg['To'] = TRELLO_EMAIL
-
-        #     body = 'Zotero item that needs tagged'
-
-        #     msg.attach(MIMEText(body, 'plain'))
-        
-        #     server = smtplib.SMTP('smtp.dreamhost.com', 587)
-        #     server.set_debuglevel(1)
-        #     server.ehlo()
-        #     server.starttls()
-        #     server.ehlo()
-        #     text = msg.as_string()
-        #     server.sendmail(fromaddr, toaddr, text)
-
-        #     # output = subprocess.check_output(['/bin/echo', 'Nada', '|', '/usr/bin/mail', '-s', subject, TRELLO_EMAIL], shell=True)
         print('/bin/echo "Zotero item that needs tagged" | mail -s "', item['title'], '#red #yellow"', TRELLO_EMAIL)
 
-        #     # s.ehlo()
-        #     # s.starttls()
-        #     # s.ehlo()
-
-        #     # s.ehlo()
-        #     # s.send_message(msg)
-
-        #     # print('Sent',item['title'])
-
-        break # TODO temporary just to add *one* card
-
-    # s.quit()
 
 
 
